@@ -1,0 +1,15 @@
+on:
+    workflow_dispatch:
+      
+jobs:
+    go-release:
+      runs-on: self-hosted
+      steps:
+        - name: Check out the repository
+          uses: actions/checkout@v2
+        - name: npm install
+          run: go mod tidy
+        - name: Release
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: goreleaser release --snapshot
