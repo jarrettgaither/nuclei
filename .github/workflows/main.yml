@@ -7,13 +7,16 @@ jobs:
       steps:
         - name: Check out the repository
           uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
         - name: Set up Go
           uses: actions/setup-go@v5
           with:
             go-version: 1.21
-        - name: npm install
-          run: go mod tidy
-        - name: Release
+        - name: Run GoReleaser
+          uses: goreleaser/goreleaser-action@v6
+          with:
+            version: latest
+            args: release --clean
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: goreleaser release --snapshot
